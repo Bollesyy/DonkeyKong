@@ -1,0 +1,67 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour {
+
+	public enum PlatformerStates{grounded, climbing, airborne}
+	public PlatformerStates playerState;
+	public float maxSpeed = .5f;
+	public float jumpTakeOffSpeed = 7f;
+
+	public bool onLadder;
+
+
+
+
+	void Start () 
+	{
+
+	}
+
+	void Update ()
+	{
+		if (onLadder && Input.GetKey("w")) {
+			playerState = PlatformerStates.climbing;
+			MoveUp ();
+		}
+		
+		if (onLadder && Input.GetKey("s")) {
+			MoveDown ();
+		}
+		if (!onLadder) {
+			playerState = PlatformerStates.grounded;
+		} if (Input.GetKey ("a") && playerState == PlatformerStates.grounded) {
+			MoveLeft ();
+
+		}  if (Input.GetKey ("d") && playerState == PlatformerStates.grounded) {
+			MoveRight ();
+		}
+	}
+
+	
+
+
+	public void MoveRight()
+	{
+		transform.position +=  new Vector3 (maxSpeed, 0, 0);
+	}
+
+	public void MoveLeft()
+	{
+		transform.position +=  new Vector3 (-maxSpeed, 0, 0);
+	}
+		
+	public void MoveUp()
+	{
+	
+		transform.position += new Vector3 (0, maxSpeed, 0);
+	}
+
+	public void MoveDown()
+	{
+
+		transform.position += new Vector3 (0, -maxSpeed, 0);
+	}
+
+}
