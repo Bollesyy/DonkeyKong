@@ -1,0 +1,48 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class WeaponPickup : MonoBehaviour {
+
+	public bool hasWeapon;
+	public float weaponTimer = 10f;
+	GameObject weapon;
+
+	void Start () {
+		hasWeapon = false;
+		weapon = GameObject.FindGameObjectWithTag ("Weapon");
+	}
+
+	void Update(){
+		if (hasWeapon) {
+			StartCoroutine (Countdown ());
+		}
+
+		if (weaponTimer == 0) {
+			hasWeapon = false;
+		}
+	}
+
+	IEnumerator Countdown(){
+		if (hasWeapon) {
+			for (int i = 10; i <= weaponTimer; i--) {
+				yield return new WaitForSeconds(1);
+				weaponTimer = i;
+				yield return new WaitForSeconds (1);
+				Debug.Log ("Weapon Timer: " + weaponTimer.ToString ());
+				if (weaponTimer == 0) {
+					yield break;
+				}
+			}
+		}
+	}
+
+	void OnTriggerEnter2D(Collider2D col){
+		if (col.gameObject.tag == "Weapon") {
+			hasWeapon = true;
+			Destroy (weapon);
+		}
+	}
+
+
+}
